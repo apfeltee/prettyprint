@@ -1,0 +1,14 @@
+index.txt
+*.exe
+*.stackdump
+*.dump
+*.trace
+*.core
+*.dll
+*.lib
+*.o
+*.so
+*.obj
+*.pch
+*.gch
+
