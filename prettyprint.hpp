@@ -64,22 +64,22 @@ namespace pretty
         template<typename KeyT, typename ValueT>
         struct printmaplike
         {
-            template<template<class, class, class...> class ContainerT>
+            template<typename CompT, typename AllocT, template<class, class, class, class> class ContainerT>
             static void doit(
                 std::ostream&,
                 const std::string&,
-                const ContainerT<KeyT, ValueT>&
+                const ContainerT<KeyT, ValueT, CompT, AllocT>&
             );
         };
 
         template<typename ValueT>
         struct printlistlike
         {
-            template<template<class, class...> class ContainerT>
+            template<typename AllocT, template<class, class> class ContainerT>
             static void doit(
                 std::ostream&,
                 const std::string&,
-                const ContainerT<ValueT>&
+                const ContainerT<ValueT, AllocT>&
             );
         };
 
@@ -472,12 +472,19 @@ namespace pretty
     /* --- this is where the guts of the functions that depend on other functions are defined */
     namespace internal
     {
+        /*
+        std::map<
+            std::string,
+            test::Foo,
+            std::less<_Kty>,
+            std::allocator<std::pair<const _Kty,_Ty>>>
+        */
         template<typename KeyT, typename ValueT>
-        template<template<class, class, class...> class ContainerT>
+        template<typename CompT, typename AllocT, template<class, class, class, class> class ContainerT>
         void printmaplike<KeyT, ValueT>::doit(
             std::ostream& out,
             const std::string& name,
-            const ContainerT<KeyT, ValueT>& map
+            const ContainerT<KeyT, ValueT, CompT, AllocT>& map
         )
         {
             (void)name;
@@ -497,11 +504,11 @@ namespace pretty
         }
 
         template<typename ValueT>
-        template<template<class, class...> class ContainerT>
+        template<typename AllocT, template<class, class> class ContainerT>
         void printlistlike<ValueT>::doit(
             std::ostream& out,
             const std::string& name,
-            const ContainerT<ValueT>& lst
+            const ContainerT<ValueT, AllocT>& lst
         )
         {
             (void)name;
